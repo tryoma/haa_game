@@ -3,6 +3,7 @@ import todoRoutes from './routes/todos';
 import lineRoutes from './routes/line';
 import { json } from 'body-parser';
 
+const PORT=process.env.PORT || 3000;
 const app = express();
 
 app.use(json());
@@ -20,4 +21,4 @@ app.use((err: Error, req: Request, res: Response, nest: NextFunction) => {
   res.status(500).json({ message: err.message });
 });
 
-app.listen(3000);
+app.listen(PORT);
