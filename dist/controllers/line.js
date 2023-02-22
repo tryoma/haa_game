@@ -35,8 +35,24 @@ const client = new line.Client(config);
 const lineEndpoint = (req, res, next) => {
     const event = req.body.events[0];
     client.replyMessage(event.replyToken, {
-        type: 'text',
-        text: event.message.text,
+        type: 'template',
+        altText: 'test',
+        template: {
+            "type": "confirm",
+            "text": `今日の晩ご飯はでどう？`,
+            "actions": [
+                {
+                    "type": "message",
+                    "label": "NO",
+                    "text": `今日の晩ご飯はで決まり！NO`
+                },
+                {
+                    "type": "message",
+                    "label": "YES",
+                    "text": `今日の晩ご飯はで決まり！`
+                }
+            ]
+        }
     });
     console.log(req.body.events);
     console.log('test');
