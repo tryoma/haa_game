@@ -1,4 +1,5 @@
-require('dotenv').config();
+import * as dotenv from 'dotenv'
+dotenv.config()
 import { RequestHandler } from 'express';
 import * as line from '@line/bot-sdk';
 
