@@ -24,7 +24,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lineEndpoint = void 0;
-require('dotenv').config();
+const dotenv = __importStar(require("dotenv"));
+dotenv.config();
 const line = __importStar(require("@line/bot-sdk"));
 const config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
