@@ -4,9 +4,11 @@ import { RequestHandler } from 'express';
 import * as line from '@line/bot-sdk';
 
 import fs from 'fs';
-import { parse } from 'csv-parse';
-const file = fs.readFileSync('src/haa.csv');
-const records = parse(file, {columns: false})
+import { parse } from 'csv-parse/sync';
+const file = fs.readFileSync('src/haa.csv').toString();;
+const records = parse(file, { columns: false });
+
+console.log(records[0]);
 
 const config = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
@@ -18,7 +20,7 @@ export const lineEndpoint: RequestHandler = (req, res, next) => {
   const event = req.body.events[0];
   if (event.type === 'message' && event.message.type === 'text') {
     if (event.message.text === '新規') {
-      console.log(records);
+      console.log(records[0]);
       // 新規お題作成
     } else if (event.message.text === 'お題IDあり') {
       client.replyMessage(

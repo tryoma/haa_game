@@ -31,9 +31,11 @@ const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const line = __importStar(require("@line/bot-sdk"));
 const fs_1 = __importDefault(require("fs"));
-const csv_parse_1 = require("csv-parse");
-const file = fs_1.default.readFileSync('src/haa.csv');
-const records = (0, csv_parse_1.parse)(file, { columns: false });
+const sync_1 = require("csv-parse/sync");
+const file = fs_1.default.readFileSync('src/haa.csv').toString();
+;
+const records = (0, sync_1.parse)(file, { columns: false });
+console.log(records[0]);
 const config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
     channelSecret: process.env.LINE_CHANNEL_SECRET || '',
@@ -43,7 +45,7 @@ const lineEndpoint = (req, res, next) => {
     const event = req.body.events[0];
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {
-            console.log(records);
+            console.log(records[0]);
             // 新規お題作成
         }
         else if (event.message.text === 'お題IDあり') {
