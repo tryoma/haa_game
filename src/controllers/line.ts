@@ -4,9 +4,9 @@ import { RequestHandler } from 'express';
 import * as line from '@line/bot-sdk';
 
 import fs from 'fs';
-import parse from 'csv-parse';
-const data = fs.readFileSync('./src/haa.csv');
-const records = parse.parse(data, { columns: false });
+import { parse } from 'csv-parse';
+const file = fs.readFileSync(__dirname + '../haa.csv');
+const records = parse(file, {escape: '\\'})
 
 const config = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
