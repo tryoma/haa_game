@@ -5,7 +5,7 @@ import * as line from '@line/bot-sdk';
 
 import fs from 'fs';
 import { parse } from 'csv-parse';
-const file = fs.readFileSync(__dirname + '../haa.csv');
+const file = fs.readFileSync('src/haa.csv');
 const records = parse(file, {escape: '\\'})
 
 const config = {
