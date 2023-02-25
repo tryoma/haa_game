@@ -22,11 +22,18 @@ var __importStar = (this && this.__importStar) || function (mod) {
     __setModuleDefault(result, mod);
     return result;
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.lineEndpoint = void 0;
 const dotenv = __importStar(require("dotenv"));
 dotenv.config();
 const line = __importStar(require("@line/bot-sdk"));
+const fs_1 = __importDefault(require("fs"));
+const csv_parse_1 = __importDefault(require("csv-parse"));
+const data = fs_1.default.readFileSync('../haa.csv');
+const records = csv_parse_1.default.parse(data, { columns: false });
 const config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
     channelSecret: process.env.LINE_CHANNEL_SECRET || '',
@@ -36,6 +43,7 @@ const lineEndpoint = (req, res, next) => {
     const event = req.body.events[0];
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {
+            console.log(records);
             // 新規お題作成
         }
         else if (event.message.text === 'お題IDあり') {
@@ -48,26 +56,6 @@ const lineEndpoint = (req, res, next) => {
             client.replyMessage(event.replyToken, confirmTemplate());
         }
     }
-    // client.replyMessage(event.replyToken, {
-    //   type: 'template',
-    //   altText: 'test',
-    //   template: {
-    //     type: 'confirm',
-    //     text: '新規ですか？それとも、お題IDをお持ちですか？',
-    //     actions: [
-    //       {
-    //         type: 'message', //"NO"が押されたらpostbackアクション
-    //         label: '新規',
-    //         text: '新規',
-    //       },
-    //       {
-    //         type: 'message', //"YES"が押されたらmessageアクション
-    //         label: 'お題IDあり',
-    //         text: 'お題IDあり',
-    //       },
-    //     ],
-    //   },
-    // });
     res.status(201);
 };
 exports.lineEndpoint = lineEndpoint;
@@ -96,7 +84,7 @@ const confirmTemplate = () => {
 const textTemplate = (msg) => {
     return {
         type: 'text',
-        text: `${msg}`
+        text: `${msg}`,
     };
 };
 function isUniqId(test) {

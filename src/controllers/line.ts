@@ -3,6 +3,11 @@ dotenv.config();
 import { RequestHandler } from 'express';
 import * as line from '@line/bot-sdk';
 
+import fs from 'fs';
+import parse from 'csv-parse';
+const data = fs.readFileSync('../haa.csv');
+const records = parse.parse(data, { columns: false });
+
 const config = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
   channelSecret: process.env.LINE_CHANNEL_SECRET || '',
@@ -13,35 +18,19 @@ export const lineEndpoint: RequestHandler = (req, res, next) => {
   const event = req.body.events[0];
   if (event.type === 'message' && event.message.type === 'text') {
     if (event.message.text === '新規') {
+      console.log(records);
       // 新規お題作成
     } else if (event.message.text === 'お題IDあり') {
-      client.replyMessage(event.replyToken, textTemplate('お題IDを貼り付けて下さい。'));
+      client.replyMessage(
+        event.replyToken,
+        textTemplate('お題IDを貼り付けて下さい。')
+      );
     } else if (isUniqId(event.message.text)) {
       // お題検索
     } else {
       client.replyMessage(event.replyToken, confirmTemplate());
     }
   }
-  // client.replyMessage(event.replyToken, {
-  //   type: 'template',
-  //   altText: 'test',
-  //   template: {
-  //     type: 'confirm',
-  //     text: '新規ですか？それとも、お題IDをお持ちですか？',
-  //     actions: [
-  //       {
-  //         type: 'message', //"NO"が押されたらpostbackアクション
-  //         label: '新規',
-  //         text: '新規',
-  //       },
-  //       {
-  //         type: 'message', //"YES"が押されたらmessageアクション
-  //         label: 'お題IDあり',
-  //         text: 'お題IDあり',
-  //       },
-  //     ],
-  //   },
-  // });
   res.status(201);
 };
 
@@ -54,7 +43,7 @@ const confirmTemplate = () => {
       text: `新規ですか？それとも、\nお題IDをお持ちですか？`,
       actions: [
         {
-          type: 'message', 
+          type: 'message',
           label: '新規',
           text: '新規',
         },
@@ -71,7 +60,7 @@ const confirmTemplate = () => {
 const textTemplate = (msg: string) => {
   return {
     type: 'text',
-    text: `${msg}`
+    text: `${msg}`,
   } as line.Message;
 };
 
