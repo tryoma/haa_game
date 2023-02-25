@@ -5,7 +5,7 @@ import * as line from '@line/bot-sdk';
 
 import fs from 'fs';
 import parse from 'csv-parse';
-const data = fs.readFileSync('../haa.csv');
+const data = fs.readFileSync('haa.csv');
 const records = parse.parse(data, { columns: false });
 
 const config = {

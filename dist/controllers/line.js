@@ -32,7 +32,7 @@ dotenv.config();
 const line = __importStar(require("@line/bot-sdk"));
 const fs_1 = __importDefault(require("fs"));
 const csv_parse_1 = __importDefault(require("csv-parse"));
-const data = fs_1.default.readFileSync('../haa.csv');
+const data = fs_1.default.readFileSync('haa.csv');
 const records = csv_parse_1.default.parse(data, { columns: false });
 const config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
