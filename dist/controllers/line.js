@@ -34,28 +34,63 @@ const config = {
 const client = new line.Client(config);
 const lineEndpoint = (req, res, next) => {
     const event = req.body.events[0];
-    client.replyMessage(event.replyToken, {
-        type: 'template',
-        altText: 'test',
-        template: {
-            "type": "confirm",
-            "text": `今日の晩ご飯はでどう？`,
-            "actions": [
-                {
-                    "type": "message",
-                    "label": "NO",
-                    "text": `今日の晩ご飯はで決まり！NO`
-                },
-                {
-                    "type": "message",
-                    "label": "YES",
-                    "text": `今日の晩ご飯はで決まり！`
-                }
-            ]
+    if (event.type === 'message' && event.message.type === 'text') {
+        if (event.message.text === '新規') {
         }
-    });
+        else if (isUniqId(event.message.text)) {
+        }
+        else {
+            client.replyMessage(event.replyToken, confirmTemplate());
+        }
+    }
+    // client.replyMessage(event.replyToken, {
+    //   type: 'template',
+    //   altText: 'test',
+    //   template: {
+    //     type: 'confirm',
+    //     text: '新規ですか？それとも、お題IDをお持ちですか？',
+    //     actions: [
+    //       {
+    //         type: 'message', //"NO"が押されたらpostbackアクション
+    //         label: '新規',
+    //         text: '新規',
+    //       },
+    //       {
+    //         type: 'message', //"YES"が押されたらmessageアクション
+    //         label: 'お題IDあり',
+    //         text: 'お題IDあり',
+    //       },
+    //     ],
+    //   },
+    // });
     console.log(req.body.events);
     console.log('test');
     res.status(201);
 };
 exports.lineEndpoint = lineEndpoint;
+const confirmTemplate = () => {
+    return {
+        type: 'template',
+        altText: 'test',
+        template: {
+            type: 'confirm',
+            text: '新規ですか？それとも、お題IDをお持ちですか？',
+            actions: [
+                {
+                    type: 'message',
+                    label: '新規',
+                    text: '新規',
+                },
+                {
+                    type: 'message',
+                    label: 'お題IDあり',
+                    text: 'お題IDあり',
+                },
+            ],
+        },
+    };
+};
+function isUniqId(test) {
+    const regex = /\d{1,2}[-]\d{10}/g;
+    return !!test.match(regex);
+}
