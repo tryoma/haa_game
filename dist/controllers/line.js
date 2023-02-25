@@ -33,7 +33,7 @@ const line = __importStar(require("@line/bot-sdk"));
 const fs_1 = __importDefault(require("fs"));
 const csv_parse_1 = require("csv-parse");
 const file = fs_1.default.readFileSync('src/haa.csv');
-const records = (0, csv_parse_1.parse)(file, { escape: '\\' });
+const records = (0, csv_parse_1.parse)(file, { columns: false });
 const config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
     channelSecret: process.env.LINE_CHANNEL_SECRET || '',

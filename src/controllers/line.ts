@@ -6,7 +6,7 @@ import * as line from '@line/bot-sdk';
 import fs from 'fs';
 import { parse } from 'csv-parse';
 const file = fs.readFileSync('src/haa.csv');
-const records = parse(file, {escape: '\\'})
+const records = parse(file, {columns: false})
 
 const config = {
   channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
