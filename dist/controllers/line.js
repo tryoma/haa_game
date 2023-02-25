@@ -36,8 +36,13 @@ const lineEndpoint = (req, res, next) => {
     const event = req.body.events[0];
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {
+            // 新規お題作成
+        }
+        else if (event.message.text === 'お題IDあり') {
+            client.replyMessage(event.replyToken, textTemplate('お題IDを貼り付けて下さい。'));
         }
         else if (isUniqId(event.message.text)) {
+            // お題検索
         }
         else {
             client.replyMessage(event.replyToken, confirmTemplate());
@@ -63,8 +68,6 @@ const lineEndpoint = (req, res, next) => {
     //     ],
     //   },
     // });
-    console.log(req.body.events);
-    console.log('test');
     res.status(201);
 };
 exports.lineEndpoint = lineEndpoint;
@@ -74,7 +77,7 @@ const confirmTemplate = () => {
         altText: 'test',
         template: {
             type: 'confirm',
-            text: '新規ですか？それとも、お題IDをお持ちですか？',
+            text: `新規ですか？それとも、\nお題IDをお持ちですか？`,
             actions: [
                 {
                     type: 'message',
@@ -88,6 +91,12 @@ const confirmTemplate = () => {
                 },
             ],
         },
+    };
+};
+const textTemplate = (msg) => {
+    return {
+        type: 'text',
+        text: `${msg}`
     };
 };
 function isUniqId(test) {

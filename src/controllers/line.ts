@@ -13,7 +13,11 @@ export const lineEndpoint: RequestHandler = (req, res, next) => {
   const event = req.body.events[0];
   if (event.type === 'message' && event.message.type === 'text') {
     if (event.message.text === '新規') {
+      // 新規お題作成
+    } else if (event.message.text === 'お題IDあり') {
+      client.replyMessage(event.replyToken, textTemplate('お題IDを貼り付けて下さい。'));
     } else if (isUniqId(event.message.text)) {
+      // お題検索
     } else {
       client.replyMessage(event.replyToken, confirmTemplate());
     }
@@ -38,9 +42,6 @@ export const lineEndpoint: RequestHandler = (req, res, next) => {
   //     ],
   //   },
   // });
-  console.log(req.body.events);
-  console.log('test');
-
   res.status(201);
 };
 
@@ -50,20 +51,27 @@ const confirmTemplate = () => {
     altText: 'test',
     template: {
       type: 'confirm',
-      text: '新規ですか？それとも、お題IDをお持ちですか？',
+      text: `新規ですか？それとも、\nお題IDをお持ちですか？`,
       actions: [
         {
-          type: 'message', //"NO"が押されたらpostbackアクション
+          type: 'message', 
           label: '新規',
           text: '新規',
         },
         {
-          type: 'message', //"YES"が押されたらmessageアクション
+          type: 'message',
           label: 'お題IDあり',
           text: 'お題IDあり',
         },
       ],
     },
+  } as line.Message;
+};
+
+const textTemplate = (msg: string) => {
+  return {
+    type: 'text',
+    text: `${msg}`
   } as line.Message;
 };
 
