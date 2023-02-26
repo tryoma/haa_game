@@ -101,6 +101,8 @@ const lineEndpoint = async (req, res, next) => {
             const data = await DataModel.findOne({ uniqId: event.message.text });
             if (data) {
                 const array = data.usedNumber;
+                console.log('array');
+                console.log(array);
                 let newNum = Math.floor(1 + Math.random() * 8);
                 console.log('array');
                 console.log(array);
