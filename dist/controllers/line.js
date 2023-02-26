@@ -79,22 +79,16 @@ const lineEndpoint = async (req, res, next) => {
                 if (err) {
                     console.log('err');
                     console.log(err);
-                    // messages = [
-                    //   {
-                    //     type: 'text',
-                    //     text: 'エラーがおきました。',
-                    //   },
-                    // ]
-                    // request(replyToken, messages)
                 }
                 else {
                     console.log(data);
                     const titleId = Number(data.titleId);
                     const selectRecord = records[titleId];
                     client.replyMessage(event.replyToken, [
-                        textTemplate(`あなたの番号は${newNum}`),
-                        textTemplate(`お題は『${selectRecord[1]}』\n1.${selectRecord[2]}\n2.${selectRecord[3]}\n3.${selectRecord[4]}\n4.${selectRecord[5]}\n5.${selectRecord[6]}\n6.${selectRecord[7]}\n7.${selectRecord[8]}\n8.${selectRecord[9]}`),
-                        textTemplate(`コピーしてメモにつかってください。\n1. 2. 3. 4. 5. 6. 7. 8. `),
+                        textTemplate(`あなたの番号は『${newNum}』`),
+                        textTemplate(`お題IDは『${data.uniqId}』`),
+                        textTemplate(`お題は『${selectRecord[1]}』\n1. ${selectRecord[2]}\n2. ${selectRecord[3]}\n3. ${selectRecord[4]}\n4. ${selectRecord[5]}\n5. ${selectRecord[6]}\n6. ${selectRecord[7]}\n7. ${selectRecord[8]}\n8. ${selectRecord[9]}`),
+                        textTemplate(`コピーしてメモにつかってください。\n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. `),
                     ]);
                 }
             });
