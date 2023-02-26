@@ -39,7 +39,7 @@ const currentTime = moment();
 const mongoose_1 = __importDefault(require("mongoose"));
 mongoose_1.default.set('strictQuery', true);
 mongoose_1.default
-    .connect(process.env.MONGO_DB || '')
+    .connect(process.env.MONGO_DB)
     .then(() => {
     console.log('success!');
 })
@@ -48,9 +48,6 @@ mongoose_1.default
 });
 const Schema = mongoose_1.default.Schema;
 const DataSchema = new Schema({
-    titleId: Number,
-    uniqId: String,
-    usedNumber: Array,
     startedOn: Date,
 });
 const DataModel = mongoose_1.default.model('Data', DataSchema);
@@ -70,9 +67,6 @@ const lineEndpoint = async (req, res, next) => {
                 currentTime.format('YYYYMMDDHH');
             const newNum = Math.floor(Math.random() * 9);
             const saveData = {
-                titleId: Number(titleId),
-                uniqId: uniqId,
-                usedNumber: [newNum],
                 startedOn: new Date(),
             };
             DataModel.create(saveData, (err, data) => {

@@ -15,7 +15,7 @@ import mongoose from 'mongoose';
 mongoose.set('strictQuery', true);
 
 mongoose
-  .connect(process.env.MONGO_DB || '')
+  .connect(process.env.MONGO_DB!)
   .then(() => {
     console.log('success!');
   })
@@ -25,9 +25,6 @@ mongoose
 
 const Schema = mongoose.Schema;
 const DataSchema = new Schema({
-  titleId: Number,
-  uniqId: String,
-  usedNumber: Array,
   startedOn: Date,
 });
 
@@ -51,9 +48,6 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
         currentTime.format('YYYYMMDDHH');
       const newNum = Math.floor(Math.random() * 9);
       const saveData = {
-        titleId: Number(titleId),
-        uniqId: uniqId,
-        usedNumber: [newNum],
         startedOn: new Date(),
       };
       DataModel.create(saveData, (err, data) => {
