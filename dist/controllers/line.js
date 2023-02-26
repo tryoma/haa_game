@@ -34,7 +34,6 @@ const fs_1 = __importDefault(require("fs"));
 const sync_1 = require("csv-parse/sync");
 const file = fs_1.default.readFileSync('src/haa.csv').toString();
 const records = (0, sync_1.parse)(file, { columns: false });
-console.log(records[0]);
 const moment = require('moment');
 const currentTime = moment();
 const mongoose_1 = __importDefault(require("mongoose"));
@@ -64,7 +63,7 @@ const lineEndpoint = async (req, res, next) => {
     const event = req.body.events[0];
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {
-            console.log(records[0]);
+            // console.log(records[0]);
             const titleId = records[Math.floor(Math.random() * records.length)][0];
             const uniqId = Math.floor(Math.random() * 101) +
                 '-' +
@@ -76,8 +75,9 @@ const lineEndpoint = async (req, res, next) => {
                 usedNumber: [newNum],
                 startedOn: new Date(),
             };
-            await DataModel.create(saveData, (err, data) => {
+            DataModel.create(saveData, (err, data) => {
                 if (err) {
+                    console.log('err');
                     console.log(err);
                     // messages = [
                     //   {

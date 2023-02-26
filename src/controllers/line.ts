@@ -7,7 +7,6 @@ import fs from 'fs';
 import { parse } from 'csv-parse/sync';
 const file = fs.readFileSync('src/haa.csv').toString();
 const records = parse(file, { columns: false });
-console.log(records[0]);
 const moment = require('moment');
 const currentTime = moment();
 
@@ -44,7 +43,7 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
   const event = req.body.events[0];
   if (event.type === 'message' && event.message.type === 'text') {
     if (event.message.text === '新規') {
-      console.log(records[0]);
+      // console.log(records[0]);
       const titleId = records[Math.floor(Math.random() * records.length)][0];
       const uniqId =
         Math.floor(Math.random() * 101) +
@@ -57,8 +56,9 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
         usedNumber: [newNum],
         startedOn: new Date(),
       };
-      await DataModel.create(saveData, (err, data) => {
+      DataModel.create(saveData, (err, data) => {
         if (err) {
+          console.log('err');
           console.log(err);
           // messages = [
           //   {
