@@ -25,6 +25,9 @@ mongoose
 
 const Schema = mongoose.Schema;
 const DataSchema = new Schema({
+  titleId: String,
+  uniqId: String,
+  usedNumber: Array,
   startedOn: Date,
 });
 
@@ -48,6 +51,9 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
         currentTime.format('YYYYMMDDHH');
       const newNum = Math.floor(Math.random() * 9);
       const saveData = {
+        titleId: titleId,
+        uniqId: uniqId,
+        usedNumber: [newNum],
         startedOn: new Date(),
       };
       DataModel.create(saveData, (err, data) => {
