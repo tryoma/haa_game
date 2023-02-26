@@ -60,7 +60,7 @@ const config = {
     channelSecret: process.env.LINE_CHANNEL_SECRET || '',
 };
 const client = new line.Client(config);
-const lineEndpoint = (req, res, next) => {
+const lineEndpoint = async (req, res, next) => {
     const event = req.body.events[0];
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {

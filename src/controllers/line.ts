@@ -40,7 +40,7 @@ const config = {
 };
 
 const client = new line.Client(config);
-export const lineEndpoint: RequestHandler = (req, res, next) => {
+export const lineEndpoint: RequestHandler = async (req, res, next) => {
   const event = req.body.events[0];
   if (event.type === 'message' && event.message.type === 'text') {
     if (event.message.text === '新規') {
