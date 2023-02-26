@@ -87,6 +87,12 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
       if (data) {
         const array = data.usedNumber;
         let newNum = Math.floor(1 + Math.random() * 8);
+        console.log('array')
+        console.log(array)
+        console.log('newNum')
+        console.log(newNum)
+        console.log('array.includes(newNum)')
+        console.log(array.includes(newNum))
         while (array.includes(newNum)) {
           newNum = Math.floor(1 + Math.random() * 8);
         }
