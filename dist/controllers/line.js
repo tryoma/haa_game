@@ -64,7 +64,7 @@ const lineEndpoint = async (req, res, next) => {
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {
             // console.log(records[0]);
-            const titleId = records[Math.floor(Math.random() * records.length)][0];
+            const titleId = records[1 + Math.floor(Math.random() * (records.length - 1))][0];
             const uniqId = Math.floor(Math.random() * 101) +
                 '-' +
                 currentTime.format('YYYYMMDDHH');
@@ -82,6 +82,7 @@ const lineEndpoint = async (req, res, next) => {
                 }
                 else {
                     console.log(data);
+                    console.log(Number(data.titleId));
                     const titleId = Number(data.titleId);
                     const selectRecord = records[titleId];
                     client.replyMessage(event.replyToken, [
