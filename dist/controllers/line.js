@@ -101,9 +101,9 @@ const lineEndpoint = async (req, res, next) => {
             const data = await DataModel.findOne({ uniqId: event.message.text });
             if (data) {
                 const array = data.usedNumber;
-                let newNum = Math.floor(Math.random() * 9);
+                let newNum = 1 + Math.floor(Math.random() * 8);
                 while (array.includes(newNum)) {
-                    newNum = Math.floor(Math.random() * 9);
+                    newNum = 1 + Math.floor(Math.random() * 8);
                 }
                 const newArray = [...array, newNum];
                 await DataModel.updateOne({ uniqId: lineText }, {
