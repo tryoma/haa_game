@@ -85,7 +85,12 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
       const data = await DataModel.findOne({ uniqId: event.message.text });
       if (data) {
         const array = data.usedNumber;
-        if (array.length <= 8) {
+        if (array.length >= 8) {
+          client.replyMessage(
+            event.replyToken,
+            textTemplate('人数は8人までです。')
+          );
+        } else {
           let newNum = Math.floor(1 + Math.random() * 8);
           while (array.includes(newNum)) {
             newNum = Math.floor(1 + Math.random() * 8);
@@ -110,11 +115,6 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
               `コピーしてメモにつかってください。\n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. `
             ),
           ]);
-        } else {
-          client.replyMessage(
-            event.replyToken,
-            textTemplate('人数は8人までです。')
-          );
         }
       }
     } else {
