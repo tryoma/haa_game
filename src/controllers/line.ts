@@ -57,7 +57,7 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
         usedNumber: [newNum],
         startedOn: new Date(),
       };
-      DataModel.create(saveData, (err, data) => {
+      await DataModel.create(saveData, (err, data) => {
         if (err) {
           console.log(err);
           // messages = [
