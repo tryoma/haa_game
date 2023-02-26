@@ -33,9 +33,28 @@ const line = __importStar(require("@line/bot-sdk"));
 const fs_1 = __importDefault(require("fs"));
 const sync_1 = require("csv-parse/sync");
 const file = fs_1.default.readFileSync('src/haa.csv').toString();
-;
 const records = (0, sync_1.parse)(file, { columns: false });
 console.log(records[0]);
+const moment = require('moment');
+const currentTime = moment();
+const mongoose_1 = __importDefault(require("mongoose"));
+mongoose_1.default.set('strictQuery', true);
+mongoose_1.default
+    .connect(process.env.MONGO_DB || '')
+    .then(() => {
+    console.log('success!');
+})
+    .catch((err) => {
+    console.log('fail!');
+});
+const Schema = mongoose_1.default.Schema;
+const DataSchema = new Schema({
+    titleId: Number,
+    uniqId: String,
+    usedNumber: Array,
+    startedOn: Date,
+});
+const DataModel = mongoose_1.default.model('Data', DataSchema);
 const config = {
     channelAccessToken: process.env.LINE_ACCESS_TOKEN || '',
     channelSecret: process.env.LINE_CHANNEL_SECRET || '',
@@ -46,7 +65,32 @@ const lineEndpoint = (req, res, next) => {
     if (event.type === 'message' && event.message.type === 'text') {
         if (event.message.text === '新規') {
             console.log(records[0]);
-            // 新規お題作成
+            const titleId = records[Math.floor(Math.random() * records.length)][0];
+            const uniqId = Math.floor(Math.random() * 101) +
+                '-' +
+                currentTime.format('YYYYMMDDHH');
+            const newNum = Math.floor(Math.random() * 9);
+            const saveData = {
+                titleId: Number(titleId),
+                uniqId: uniqId,
+                usedNumber: [newNum],
+                startedOn: new Date(),
+            };
+            DataModel.create(saveData, (err, data) => {
+                if (err) {
+                    console.log(err);
+                    // messages = [
+                    //   {
+                    //     type: 'text',
+                    //     text: 'エラーがおきました。',
+                    //   },
+                    // ]
+                    // request(replyToken, messages)
+                }
+                else {
+                    console.log(data);
+                }
+            });
         }
         else if (event.message.text === 'お題IDあり') {
             client.replyMessage(event.replyToken, textTemplate('お題IDを貼り付けて下さい。'));
