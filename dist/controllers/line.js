@@ -72,7 +72,7 @@ const lineEndpoint = async (req, res, next) => {
             const saveData = {
                 titleId: titleId,
                 uniqId: uniqId,
-                usedNumber: [newNum],
+                usedNumber: [Number(newNum)],
                 startedOn: new Date(),
             };
             DataModel.create(saveData, (err, data) => {
@@ -102,10 +102,10 @@ const lineEndpoint = async (req, res, next) => {
             if (data) {
                 const array = data.usedNumber;
                 let newNum = 1 + Math.floor(Math.random() * 8);
-                while (array.includes(newNum)) {
+                while (array.includes(Number(newNum))) {
                     newNum = 1 + Math.floor(Math.random() * 8);
                 }
-                const newArray = [...array, newNum];
+                const newArray = [...array, Number(newNum)];
                 await DataModel.updateOne({ uniqId: lineText }, {
                     $set: {
                         usedNumber: newArray,
