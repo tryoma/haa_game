@@ -82,7 +82,35 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
         textTemplate('お題IDを貼り付けて下さい。')
       );
     } else if (isUniqId(event.message.text)) {
-      // お題検索
+      const lineText = event.message.text;
+      const data = await DataModel.findOne({ uniqId: event.message.text });
+      if (data) {
+        const array = data.usedNumber;
+        let newNum = Math.floor(Math.random() * 9);
+        while (array.includes(newNum)) {
+          newNum = Math.floor(Math.random() * 9);
+        }
+        const newArray = [...array, newNum];
+        await DataModel.updateOne(
+          { uniqId: lineText },
+          {
+            $set: {
+              usedNumber: newArray,
+            },
+          }
+        );
+        const titleId = Number(data.titleId);
+        const selectRecord = records[titleId];
+        client.replyMessage(event.replyToken, [
+          textTemplate(`あなたの番号は『${newNum}』`),
+          textTemplate(
+            `お題は『${selectRecord[1]}』\n1. ${selectRecord[2]}\n2. ${selectRecord[3]}\n3. ${selectRecord[4]}\n4. ${selectRecord[5]}\n5. ${selectRecord[6]}\n6. ${selectRecord[7]}\n7. ${selectRecord[8]}\n8. ${selectRecord[9]}`
+          ),
+          textTemplate(
+            `コピーしてメモにつかってください。\n1. \n2. \n3. \n4. \n5. \n6. \n7. \n8. `
+          ),
+        ]);
+      }
     } else {
       client.replyMessage(event.replyToken, confirmTemplate());
     }
