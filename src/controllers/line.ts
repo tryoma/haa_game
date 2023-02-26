@@ -49,11 +49,11 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
         Math.floor(Math.random() * 101) +
         '-' +
         currentTime.format('YYYYMMDDHH');
-      const newNum = Math.floor(Math.random() * 9);
+      const newNum = 1 + Math.floor(Math.random() * 8);
       const saveData = {
         titleId: titleId,
         uniqId: uniqId,
-        usedNumber: [Number(newNum)],
+        usedNumber: [newNum],
         startedOn: new Date(),
       };
       DataModel.create(saveData, (err, data) => {
