@@ -74,7 +74,10 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
           client.replyMessage(event.replyToken, [
             textTemplate(`あなたの番号は${newNum}`),
             textTemplate(
-              `${selectRecord[1]}\n${selectRecord[2]}\n${selectRecord[3]}\n${selectRecord[4]}`
+              `お題は『${selectRecord[1]}』\n1.${selectRecord[2]}\n2.${selectRecord[3]}\n3.${selectRecord[4]}\n4.${selectRecord[5]}\n5.${selectRecord[6]}\n6.${selectRecord[7]}\n7.${selectRecord[8]}\n8.${selectRecord[9]}`
+            ),
+            textTemplate(
+              `コピーしてメモにつかってください。\n1. 2. 3. 4. 5. 6. 7. 8. `
             ),
           ]);
         }
