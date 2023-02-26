@@ -101,11 +101,11 @@ const lineEndpoint = async (req, res, next) => {
             const data = await DataModel.findOne({ uniqId: event.message.text });
             if (data) {
                 const array = data.usedNumber;
-                let newNum = 1 + Math.floor(Math.random() * 8);
-                while (array.includes(Number(newNum))) {
-                    newNum = 1 + Math.floor(Math.random() * 8);
+                let newNum = Math.floor(1 + Math.random() * 8);
+                while (array.includes(newNum)) {
+                    newNum = Math.floor(1 + Math.random() * 8);
                 }
-                const newArray = [...array, Number(newNum)];
+                const newArray = [...array, newNum];
                 await DataModel.updateOne({ uniqId: lineText }, {
                     $set: {
                         usedNumber: newArray,
