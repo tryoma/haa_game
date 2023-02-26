@@ -43,7 +43,8 @@ export const lineEndpoint: RequestHandler = async (req, res, next) => {
   const event = req.body.events[0];
   if (event.type === 'message' && event.message.type === 'text') {
     if (event.message.text === '新規') {
-      const titleId = records[1 + Math.floor(Math.random() * (records.length - 1))][0];
+      const titleId =
+        records[1 + Math.floor(Math.random() * (records.length - 1))][0];
       const uniqId =
         Math.floor(Math.random() * 101) +
         '-' +
