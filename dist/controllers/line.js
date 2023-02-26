@@ -89,6 +89,12 @@ const lineEndpoint = async (req, res, next) => {
                 }
                 else {
                     console.log(data);
+                    const titleId = Number(data.titleId);
+                    const selectRecord = records[titleId];
+                    client.replyMessage(event.replyToken, [
+                        textTemplate(`あなたの番号は${newNum}`),
+                        textTemplate(`${selectRecord[1]}\n${selectRecord[2]}\n${selectRecord[3]}\n${selectRecord[4]}`),
+                    ]);
                 }
             });
         }
